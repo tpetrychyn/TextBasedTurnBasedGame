@@ -47,6 +47,10 @@ bool Game::isOver() const {
 }
 
 void Game::printCurrentState() const {
+    bool printedMon = false;
+    for (int h=0;h<level.getMonsterCount();h++) {
+        cout << "row: " << monsters[h].getPosition().row << " column: " << monsters[h].getPosition().column << endl;
+    }
     cout << "+";
 	for (int i=0;i<COLUMNS;i++) {
 		cout << "-";
@@ -59,13 +63,16 @@ void Game::printCurrentState() const {
             for (int h=0;h<level.getMonsterCount();h++) {
                 if (i==monsters[h].getPosition().row && j==monsters[h].getPosition().column) { //Same but for target position
                     cout << h;
-                    j++;
+                    printedMon = true;
                 }
             }
-			if (i==player.getPosition().row && j==player.getPosition().column) //Check if we are currently at our monsters position in the array
-				cout << 'P'; //If we are we print an 'N'
-            else
-				cout << level.getDisplayChar(toPosition(i,j)); //Otherwise print the symbol for the level
+            if (!printedMon) { //this is to check if we printed a monster, if we have we don't need to print a player or the map
+                if (i==player.getPosition().row && j==player.getPosition().column) //Check if we are currently at our players position in the array
+                    cout << 'P'; //If we are we print a 'P'
+                else
+                    cout << level.getDisplayChar(toPosition(i,j)); //Otherwise print the symbol for the level
+            }
+            printedMon = false;
         }
 		cout << "|";
         cout << endl;
