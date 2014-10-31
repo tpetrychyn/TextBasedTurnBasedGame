@@ -17,11 +17,11 @@ int traverseCost[] = {1,2,4,1,1,1000,0};
 Level::Level(const string& filename) {
 	ifstream inData;
 	inData.open(filename.c_str());
+    string file = filename;
     while (!inData)
     {
-        cout << "Can't find \"" << filename << "\"" << endl;
+        cout << "Can't find \"" << file << "\"" << endl;
         cout << "Please enter a filename:";
-        string file;
 		cin >> file;
 		cin.ignore(256, '\n');
 		inData.open(file.c_str());

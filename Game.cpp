@@ -10,13 +10,13 @@
 #include "Monster.h"
 #include <iostream>
 
-Game::Game (const string& filename) : level(filename), player(level.getPlayerStart()){
+Game::Game (const string& filename) : level(filename), player(level.getPlayerStart()) {
     int monCount = 0;
 	for (int i=0;i<ROWS;i++) {
         for (int j=0;j<COLUMNS;j++) {
 			if (level.getValue(toPosition(i, j)) == MONSTER_START) { //Check each position for a monster
-                Monster monster(toPosition(i,j));
-				monsters[monCount] = monster;
+                Monster monster(toPosition(i,j)); //Create a new monster at the position
+				monsters[monCount] = monster; //Store it in our monsters array
                 monCount++;
 			}
         }
