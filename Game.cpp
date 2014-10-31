@@ -1,0 +1,132 @@
+//
+//  Game.cpp
+//  cs115_assignment4
+//
+//  Created by Taylor Petrychyn on 2014-10-22.
+//  Copyright (c) 2014 Taylor Petrychyn. All rights reserved.
+//
+
+#include "Game.h"
+#include "Monster.h"
+#include <iostream>
+
+Game::Game (const string& filename) : level(filename), player(level.getPlayerStart()){
+    int monCount = 0;
+	for (int i=0;i<ROWS;i++) {
+        for (int j=0;j<COLUMNS;j++) {
+			if (level.getValue(toPosition(i, j)) == MONSTER_START) { //Check each position for a monster
+                Monster monster(toPosition(i,j));
+				monsters[monCount] = monster;
+                monCount++;
+			}
+        }
+    }
+}
+
+void Game::playerCheck(const Position& lastPlayerPos) {
+    if (level.isWall(player.getPosition()))
+        player.setPosition(lastPlayerPos);
+    for (int i=0;i<level.getMonsterCount();i++) {
+        if (areEqual(player.getPosition(), monsters[i].getPosition())) {
+            monsters[i].receiveDamage(player.getDamage());
+            player.setPosition(lastPlayerPos);
+            if (monsters[i].isDead()) { //monsters died
+                player.increaseScore(monsters[i].getPoints()); //Add to players score
+                monsters[i].setPosition(toPosition(-1,-1)); //Move monsters off the grid
+            }
+        }
+    }
+    if (!areEqual(player.getPosition(), lastPlayerPos)) //If player moved, increase cost
+        player.increaseTotalMoveCost(level.getCost(player.getPosition()));
+}
+
+bool Game::isOver() const {
+    if (player.isDead() || level.isGoalPosition(player.getPosition()))
+        return true;
+    return false;
+}
+
+void Game::printCurrentState() const {
+    cout << "+";
+	for (int i=0;i<COLUMNS;i++) {
+		cout << "-";
+	}
+	cout << "+";
+	cout << endl;
+    for (int i=0;i<ROWS;i++) {
+		cout << "|";
+        for (int j=0;j<COLUMNS;j++) {
+            for (int h=0;h<level.getMonsterCount();h++) {
+                if (i==monsters[h].getPosition().row && j==monsters[h].getPosition().column) { //Same but for target position
+                    cout << h;
+                    j++;
+                }
+            }
+			if (i==player.getPosition().row && j==player.getPosition().column) //Check if we are currently at our monsters position in the array
+				cout << 'P'; //If we are we print an 'N'
+            else
+				cout << level.getDisplayChar(toPosition(i,j)); //Otherwise print the symbol for the level
+        }
+		cout << "|";
+        cout << endl;
+    }
+	cout << "+";
+	for (int i=0;i<COLUMNS;i++) {
+		cout << "-";
+	}
+	cout << "+";
+	cout <<endl;
+    cout << "Health: " << player.getHealth() << "    Score: " << player.getScore() << "    Total move cost: " << player.getTotalMoveCost() << endl;
+}
+
+void Game::printEndGameInfo() const {
+    cout << "<+> GAME OVER <+>" << endl;
+	cout << "Final score: " << player.getScore() <<  endl << "Total move cost: " << player.getTotalMoveCost() << endl;
+}
+
+
+void Game::tryMoveNorth() {
+    Position lastPlayerPos = player.getPosition();
+    player.tryMoveNorth();
+    playerCheck(lastPlayerPos);
+}
+
+void Game::tryMoveSouth() {
+    Position lastPlayerPos = player.getPosition();
+    player.tryMoveSouth();
+    playerCheck(lastPlayerPos);
+}
+
+void Game::tryMoveEast() {
+    Position lastPlayerPos = player.getPosition();
+    player.tryMoveEast();
+    playerCheck(lastPlayerPos);
+}
+
+void Game::tryMoveWest() {
+    Position lastPlayerPos = player.getPosition();
+    player.tryMoveWest();
+    playerCheck(lastPlayerPos);
+}
+
+void Game::moveMonsters() {
+    for (int i=0;i<level.getMonsterCount();i++) {
+        Position lastmonstersPos = monsters[i].getPosition();
+        monsters[i].setPosition(monsters[i].calculateMove(*this, player.getPosition()));
+        if (areEqual(player.getPosition(), monsters[i].getPosition())) {
+            player.receiveDamage(monsters[i].getDamage());
+            monsters[i].setPosition(lastmonstersPos);
+        }
+    }
+}
+
+bool Game::isBlockedForMonster(const Position& p) const {
+    if (level.isWall(p))
+        return true;
+    for(int i=0;i<level.getMonsterCount();i++) {
+        if (areEqual(p, monsters[i].getPosition())) {
+            return true;
+        }
+    }
+    return false;
+}
