@@ -1,10 +1,10 @@
-//
-//  Game.cpp
-//  cs115_assignment4
-//
-//  Created by Taylor Petrychyn on 2014-10-22.
-//  Copyright (c) 2014 Taylor Petrychyn. All rights reserved.
-//
+/*  Game.cpp
+    Taylor Petrychyn
+    200339577
+    CS 115 Assignment 4
+    Revision: November 4, 2014
+    Purpose: To calculate and update the positions in a 2d grid based game
+ */
 
 #include "Game.h"
 #include "Monster.h"
@@ -48,9 +48,6 @@ bool Game::isOver() const {
 
 void Game::printCurrentState() const {
     bool printedMon = false;
-    for (int h=0;h<level.getMonsterCount();h++) {
-        cout << "row: " << monsters[h].getPosition().row << " column: " << monsters[h].getPosition().column << endl;
-    }
     cout << "+";
 	for (int i=0;i<COLUMNS;i++) {
 		cout << "-";
@@ -62,7 +59,7 @@ void Game::printCurrentState() const {
         for (int j=0;j<COLUMNS;j++) {
             for (int h=0;h<level.getMonsterCount();h++) {
                 if (i==monsters[h].getPosition().row && j==monsters[h].getPosition().column) { //Same but for target position
-                    cout << h;
+                    cout << 'N';
                     printedMon = true;
                 }
             }

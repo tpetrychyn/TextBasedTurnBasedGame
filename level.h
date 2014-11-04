@@ -110,13 +110,27 @@ public:
     //  Arguments: N/A
     //  Returns: number of monsters in the level
     //  Side effect: N/A
+    //
     unsigned int getMonsterCount() const;
     
     //
     //  getValue
     //
+    //  Purpose: to return the integer value of the position entered
+    //  Arguments:
+    //      <1> p: position you want the value of
+    //  Returns: integer value that is in that position in the level array
+    //
     unsigned int getValue(const Position& p) const;
     
+    //
+    //  getDisplayChar
+    //
+    //  Purpose: to get the character that corresponds to the position in the level array
+    //  Arguments:
+    //      <1> p: the position you want the character of
+    //  Returns: the character from that position in the array
+    //
     char getDisplayChar(const Position& p) const;
 
 };

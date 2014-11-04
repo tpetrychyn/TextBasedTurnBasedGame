@@ -1,10 +1,11 @@
 /*	level.cpp
 	Taylor Petrychyn
 	200339577
-	CS115 Assignment 3
+	CS115 Assignment 4
 	Revision: September 12, 2014 - Completed majority of assignment
 			  September 16, 2014 - Added more comments
 			  October 17, 2014 - Changed to class, added walls
+              November 4, 2014 - Support for multiple monsters, fixed filename entering
 	Purpose: Handles level generation and functions
 */
 
@@ -15,6 +16,7 @@ char outLevelSymbols[] = {' ','^',':',' ',' ', '#', '*'};
 int traverseCost[] = {1,2,4,1,1,1000,0};
 
 Level::Level(const string& filename) {
+    monsterCount = 0; //initialize count to 0 when a new level is called
 	ifstream inData;
 	inData.open(filename.c_str());
     string file = filename;
@@ -61,9 +63,9 @@ unsigned int Level::getCost(const Position& p) const {
 }
 
 bool Level::isWall(const Position& p) const {
-    if (p.row > 0 && p.row < ROWS && p.column > 0 && p.column < COLUMNS)
+    if (p.row > 0 && p.row < ROWS && p.column > 0 && p.column < COLUMNS) //this is to check if a monster is in the game bounds
         return (level[p.row][p.column] == WALL);
-    return true;
+    return true; //if a monster is not in the game bounds we say it is on a wall and don't let it move, used for dead monsters
 }
 
 bool Level::isGoalPosition(const Position& p) const {
