@@ -17,7 +17,7 @@ Game::Game (const string& filename) : level(filename), player(level.getPlayerSta
 			if (level.getValue(toPosition(i, j)) == MONSTER_START) { //Check each position for a monster
                 Monster monster(toPosition(i,j)); //Create a new monster at the position
 				monsters[monCount] = monster; //Store it in our monsters array
-                monCount++;
+                monCount++; //changed
 			}
         }
     }
