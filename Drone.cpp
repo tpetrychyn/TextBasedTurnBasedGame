@@ -21,12 +21,7 @@ Drone::Drone(const Position& start) : Monster(start) {
     points = 10;
 }
 
-Drone::~Drone() {
-    damage = 0;
-    health = 0;
-    points = 0;
-    position = toPosition(-1,-1);
-}
+Drone::~Drone() {}
 
 Drone::Drone(const Drone& original) {
     damage = original.damage;
@@ -48,11 +43,9 @@ char Drone::getDisplayChar() const {
     return 'D';
 }
 
-/*Monster* Monster::getClone() const {
- Drone* newMon;
- *newMon = new &Drone(*this);
- return newMon;
- }*/
+Monster* Drone::getClone() const {
+    return new Drone(*this);
+}
 
 Position Drone::calculateMove(const Game &game, const Position &player_position) {
     if (direction == NORTH) {
@@ -60,20 +53,17 @@ Position Drone::calculateMove(const Game &game, const Position &player_position)
             return calculateToPosition(game, toPosition(position.row-1, position.column));
         else
             direction = EAST;
-    }
-    if (direction == EAST) {
+    } else if (direction == EAST) {
         if (!game.isBlockedForMonster(toPosition(position.row, position.column+1)))
             return calculateToPosition(game, toPosition(position.row, position.column+1));
         else
             direction = SOUTH;
-    }
-    if (direction == SOUTH) {
+    } else if (direction == SOUTH) {
         if (!game.isBlockedForMonster(toPosition(position.row+1, position.column)))
             return calculateToPosition(game, toPosition(position.row+1, position.column));
         else
             direction = WEST;
-    }
-    if (direction == WEST) {
+    } else if (direction == WEST) {
         if (!game.isBlockedForMonster(toPosition(position.row, position.column-1)))
             return calculateToPosition(game, toPosition(position.row, position.column-1));
         else

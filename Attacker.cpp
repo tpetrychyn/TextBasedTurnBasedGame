@@ -21,10 +21,6 @@ Attacker::Attacker(const Position& start) : Monster(start) {
 }
 
 Attacker::~Attacker() {
-    damage = 0;
-    health = 0;
-    points = 0;
-    position = toPosition(-1,-1);
 }
 
 Attacker::Attacker(const Attacker& original) {
@@ -47,26 +43,11 @@ char Attacker::getDisplayChar() const {
     return 'A';
 }
 
-/*Monster* Monster::getClone() const {
-    Attacker* newMon;
-    *newMon = new &Attacker(*this);
-    return newMon;
-}*/
+Monster* Attacker::getClone() const {
+    return new Attacker(*this);
+}
 
 Position Attacker::calculateMove(const Game &game, const Position &player_position) {
     return calculateToPosition(game, player_position);
 }
-
-
-/*
- Attacker();
- Attacker(const Position& start);
- Attacker(const Attacker& original);
- virtual ~Attacker();
- Attacker& operator= (const Attacker& original);
- virtual char getDisplayChar () const;
- virtual Monster* getClone () const;
- virtual Position calculateMove (const Game& game,
- const Position& player_position);
- */
 

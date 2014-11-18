@@ -28,7 +28,7 @@ public:
     virtual ~Drone();
     Drone& operator= (const Drone& original);
     virtual char getDisplayChar () const;
-    //virtual Monster* getClone () const;
+    virtual Monster* getClone () const;
     virtual Position calculateMove (const Game& game,
                                     const Position& player_position);
 };

@@ -48,10 +48,6 @@ Monster& Monster::operator= (const Monster& original){
 }
 
 Monster::~Monster() {
-    health = 0;
-    damage = 0;
-    points = 0;
-    position = toPosition(-1,-1);
 }
 
 bool Monster::isDead () const {

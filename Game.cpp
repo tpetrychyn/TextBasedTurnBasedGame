@@ -62,6 +62,7 @@ void Game::playerCheck(const Position& lastPlayerPos) {
             if (monsters[i]->isDead()) { //monsters died
                 player.increaseScore(monsters[i]->getPoints()); //Add to players score
                 monsters[i]->setPosition(toPosition(-1,-1));
+                delete monsters[i];
             }
         }
     }

@@ -22,12 +22,7 @@ Sentry::Sentry(const Position& start) : Monster(start) {
     sentryStart = start;
 }
 
-Sentry::~Sentry() {
-    damage = 0;
-    health = 0;
-    points = 0;
-    position = toPosition(-1,-1);
-}
+Sentry::~Sentry() {}
 
 Sentry::Sentry(const Sentry& original) {
     damage = original.damage;
@@ -49,11 +44,9 @@ char Sentry::getDisplayChar() const {
     return 'S';
 }
 
-/*Monster* Monster::getClone() const {
- Sentry* newMon;
- *newMon = new &Sentry(*this);
- return newMon;
- }*/
+Monster* Sentry::getClone() const {
+    return new Sentry(*this);
+}
 
 Position Sentry::calculateMove(const Game &game, const Position &player_position) {
     if (calculateDistance(sentryStart, player_position) > 6)
