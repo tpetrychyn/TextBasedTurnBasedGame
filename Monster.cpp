@@ -32,6 +32,28 @@ Monster::Monster(const Position& start) {
 	position = start;
 }
 
+Monster::Monster (const Monster& original){
+    health = original.health;
+    damage = original.damage;
+    points = original.points;
+    position = original.position;
+}
+
+Monster& Monster::operator= (const Monster& original){
+    health = original.health;
+    damage = original.damage;
+    points = original.points;
+    position = original.position;
+    return *this;
+}
+
+Monster::~Monster() {
+    health = 0;
+    damage = 0;
+    points = 0;
+    position = toPosition(-1,-1);
+}
+
 bool Monster::isDead () const {
 	return health <= 0;
 }
@@ -56,7 +78,7 @@ void Monster::receiveDamage (unsigned int amount) {
 	health -= amount;
 }
 
-Position Monster::calculateMove (const Game& game, const Position& player_position) const {
+Position Monster::calculateToPosition (const Game& game, const Position& player_position) const {
 	// Examine the four possible locations for the monster to move,
 	// one to each of north, south, east, and west, to see which
 	// is closest to the target

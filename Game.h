@@ -15,14 +15,12 @@
 #include "Monster.h"
 #include "Player.h"
 
-const int MONSTER_COUNT = 100;
-
 class Game {
 private:
     
     Level level;
     Player player;
-    Monster monsters[MONSTER_COUNT];
+    Monster**monsters;
     
     //
     //  playerCheck
@@ -38,7 +36,6 @@ private:
     void playerCheck(const Position& lastPlayerPos);
     
 public:
-    
     //
     //  Game
     //
@@ -51,6 +48,11 @@ public:
     //               and the monsters array will be populated with monster instances
     //
     Game (const string& filename);
+    
+    Game ();
+    Game (const Game& original);
+    ~Game ();
+    Game& operator= (const Game& original);
     
     //
     //  isOver

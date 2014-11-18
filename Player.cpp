@@ -14,6 +14,14 @@
 const unsigned int STARTING_HEALTH = 40;
 const unsigned int DAMAGE = 2;
 
+Player::Player() {
+    health = 0;
+    damage = 0;
+    score = 0;
+    total_cost = 0;
+    position = toPosition(-1,-1);
+}
+
 Player::Player(const Position& start) {
 	health = STARTING_HEALTH;
 	damage = DAMAGE;
@@ -21,6 +29,26 @@ Player::Player(const Position& start) {
 	total_cost = 0;
 	position = start;
 }
+
+Player::Player (const Player& original) {
+    health = original.health;
+    damage = original.damage;
+    score = original.score;
+    total_cost = original.total_cost;
+    position = original.position;
+}
+
+Player& Player::operator=(const Player& original) {
+    health = original.health;
+    damage = original.damage;
+    score = original.score;
+    total_cost = original.total_cost;
+    position = original.position;
+    
+    return *this;
+}
+
+Player::~Player(){}
 
 bool Player::isDead () const {
 	return health <= 0;

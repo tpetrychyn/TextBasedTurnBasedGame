@@ -19,6 +19,19 @@ class Player
 		unsigned int score;
 		unsigned int total_cost;
 	public:
+    
+    //
+    //  Player
+    //
+    //  Purpose: Default player constructor.
+    //  Argument(s):
+    //    N/A
+    //  Precondition(s): N/A
+    //  Returns: N/A
+    //  Side Effect: Player player is initialized to have 0 values and -1, -1 position
+    //
+        Player();
+    
 		//
 		//  Player
 		//
@@ -31,6 +44,12 @@ class Player
 		//               values and to be at the specified position.
 		//
 		Player(const Position& start);
+    
+        Player (const Player& original);
+    
+        ~Player ();  // empty
+    
+        Player& operator= (const Player& original);
 
 		//
 		//  isDead

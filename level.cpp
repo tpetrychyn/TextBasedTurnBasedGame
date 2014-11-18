@@ -11,9 +11,9 @@
 
 #include "level.h"
 
-char levelSymbols[] = {'.','^',':','S','P', '#', '*'};
-char outLevelSymbols[] = {' ','^',':',' ',' ', '#', '*'};
-int traverseCost[] = {1,2,4,1,1,1000,0};
+char levelSymbols[] = {'.','^',':','S','P', '#', '*', 'A', 'D'};
+char outLevelSymbols[] = {' ','^',':',' ',' ', '#', '*', ' ', ' '};
+int traverseCost[] = {1,2,4,1,1,1000,0,1,1};
 
 Level::Level(const string& filename) {
     monsterCount = 0; //initialize count to 0 when a new level is called
@@ -35,7 +35,7 @@ Level::Level(const string& filename) {
             for (int n=0;n<sizeof(levelSymbols)/sizeof(levelSymbols[0]);n++) {
                 if (x==levelSymbols[n]) { //Search the levelSymbols array for a match from the map
                     level[i][j] = n; //Replace the symbol with the index of the array
-                    if (level[i][j] == MONSTER_START)
+                    if (level[i][j] == ATTACKER_START || level[i][j] == SENTRY_START || level[i][j] == DRONE_START)
                         monsterCount++;
 					break;
 				} else
@@ -43,6 +43,36 @@ Level::Level(const string& filename) {
             }
         }
     }
+}
+
+Level::Level() {
+    monsterCount = 0;
+    for (int i=0;i<ROWS;i++) {
+        for (int j=0;j<COLUMNS;j++) {
+            level[i][j] = 0;
+        }
+    }
+}
+
+Level::Level (const Level& original) {
+    for (int i=0;i<ROWS;i++) {
+        for (int j=0;j<COLUMNS;j++) {
+            level[i][j] = original.level[i][j];
+        }
+    }
+    monsterCount = original.monsterCount;
+}
+
+Level::~Level() {}
+
+Level& Level::operator= (const Level& original) {
+    for (int i=0;i<ROWS;i++) {
+        for (int j=0;j<COLUMNS;j++) {
+            level[i][j] = original.level[i][j];
+        }
+    }
+    monsterCount = original.monsterCount;
+    return *this;
 }
 
 Position Level::getPlayerStart() const {

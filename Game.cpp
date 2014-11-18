@@ -8,31 +8,60 @@
 
 #include "Game.h"
 #include "Monster.h"
+#include "Attacker.h"
+#include "Sentry.h"
+#include "Drone.h"
 #include <iostream>
 
 Game::Game (const string& filename) : level(filename), player(level.getPlayerStart()) {
-    int monCount = 0;
-	for (int i=0;i<ROWS;i++) {
+    monsters=new Monster*[level.monsterCount];
+    unsigned int currMonster = 0;
+    for (int i=0;i<ROWS;i++) {
         for (int j=0;j<COLUMNS;j++) {
-			if (level.getValue(toPosition(i, j)) == MONSTER_START) { //Check each position for a monster
-                Monster monster(toPosition(i,j)); //Create a new monster at the position
-				monsters[monCount] = monster; //Store it in our monsters array
-                monCount++; //changed
-			}
+            if (level.getValue(toPosition(i, j)) == ATTACKER_START) {
+                monsters[currMonster] = new Attacker(toPosition(i,j));
+                currMonster++;
+            } else if (level.getValue(toPosition(i, j)) == SENTRY_START) {
+                monsters[currMonster] = new Sentry(toPosition(i,j));
+                currMonster++;
+            } else if (level.getValue(toPosition(i, j)) == DRONE_START) {
+                monsters[currMonster] = new Drone(toPosition(i,j));
+                currMonster++;
+            }
         }
     }
+}
+
+Game::Game (){}
+Game::Game (const Game& original) {
+    player = original.player;
+    monsters = original.monsters;
+    level = original.level;
+}
+
+Game::~Game () {
+    for (int i=0;i<level.monsterCount;i++)
+        delete monsters[i];
+    delete[] monsters;
+}
+
+Game& Game::operator= (const Game& original) {
+    player = original.player;
+    monsters = original.monsters;
+    level = original.level;
+    return *this;
 }
 
 void Game::playerCheck(const Position& lastPlayerPos) {
     if (level.isWall(player.getPosition()))
         player.setPosition(lastPlayerPos);
     for (int i=0;i<level.getMonsterCount();i++) {
-        if (areEqual(player.getPosition(), monsters[i].getPosition())) {
-            monsters[i].receiveDamage(player.getDamage());
+        if (areEqual(player.getPosition(), monsters[i]->getPosition())) {
+            monsters[i]->receiveDamage(player.getDamage());
             player.setPosition(lastPlayerPos);
-            if (monsters[i].isDead()) { //monsters died
-                player.increaseScore(monsters[i].getPoints()); //Add to players score
-                monsters[i].setPosition(toPosition(-1,-1)); //Move monsters off the grid
+            if (monsters[i]->isDead()) { //monsters died
+                player.increaseScore(monsters[i]->getPoints()); //Add to players score
+                monsters[i]->setPosition(toPosition(-1,-1));
             }
         }
     }
@@ -58,8 +87,8 @@ void Game::printCurrentState() const {
 		cout << "|";
         for (int j=0;j<COLUMNS;j++) {
             for (int h=0;h<level.getMonsterCount();h++) {
-                if (i==monsters[h].getPosition().row && j==monsters[h].getPosition().column) { //Same but for target position
-                    cout << 'N';
+                if (i==monsters[h]->getPosition().row && j==monsters[h]->getPosition().column) { //Same but for target position
+                    cout << monsters[h]->getDisplayChar();
                     printedMon = true;
                 }
             }
@@ -115,11 +144,11 @@ void Game::tryMoveWest() {
 
 void Game::moveMonsters() {
     for (int i=0;i<level.getMonsterCount();i++) {
-        Position lastmonstersPos = monsters[i].getPosition();
-        monsters[i].setPosition(monsters[i].calculateMove(*this, player.getPosition()));
-        if (areEqual(player.getPosition(), monsters[i].getPosition())) {
-            player.receiveDamage(monsters[i].getDamage());
-            monsters[i].setPosition(lastmonstersPos);
+        Position lastmonstersPos = monsters[i]->getPosition();
+        monsters[i]->setPosition(monsters[i]->calculateMove(*this, player.getPosition()));
+        if (areEqual(player.getPosition(), monsters[i]->getPosition())) {
+            player.receiveDamage(monsters[i]->getDamage());
+            monsters[i]->setPosition(lastmonstersPos);
         }
     }
 }
@@ -128,7 +157,7 @@ bool Game::isBlockedForMonster(const Position& p) const {
     if (level.isWall(p))
         return true;
     for(int i=0;i<level.getMonsterCount();i++) {
-        if (areEqual(p, monsters[i].getPosition())) {
+        if (areEqual(p, monsters[i]->getPosition())) {
             return true;
         }
     }

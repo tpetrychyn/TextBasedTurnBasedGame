@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
 
 	//Main loop 
 	while (!game.isOver()) {
+        game.moveMonsters();
 		cout << "Enter a command: ";
 		cin.get(userInput);
 		cin.ignore(256, '\n');
@@ -40,7 +41,6 @@ int main(int argc, char* argv[])
 		else if (userInput == 'q' || userInput == 'Q')
 			break;
 
-		game.moveMonsters();
 		game.printCurrentState();
     }
     game.printEndGameInfo();

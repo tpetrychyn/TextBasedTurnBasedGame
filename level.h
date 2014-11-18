@@ -23,10 +23,12 @@ const int COLUMNS = 60;
 const int EMPTY = 0;
 const int ROCKY = 1;
 const int ROUGH = 2;
-const int MONSTER_START = 3;
+const int ATTACKER_START = 7;
 const int PLAYER_START = 4;
 const int WALL = 5;
 const int GOAL = 6;
+const int SENTRY_START = 3;
+const int DRONE_START = 8;
 
 //
 //  calculateMove
@@ -43,9 +45,9 @@ class Level {
 
 private:
 	unsigned int level[ROWS][COLUMNS];
-    unsigned int monsterCount;
 
 public:
+    unsigned int monsterCount;
 	//
 	//	Level constructor
 	//
@@ -56,6 +58,11 @@ public:
 	//	Side Effect: Modifies the level objects level[][] array
 	//
 	Level (const string& filename);
+    
+    Level();
+    Level (const Level& original);
+    ~Level ();  // empty
+    Level& operator= (const Level& original);
 
 	//
 	//	getPlayerStart
