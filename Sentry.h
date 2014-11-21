@@ -17,6 +17,10 @@ private:
     Position sentryStart;
     
 public:
+    //
+    // Refer to Attacker.h for relevant comments
+    //
+    
     Sentry();
     Sentry(const Position& start);
     Sentry(const Sentry& original);

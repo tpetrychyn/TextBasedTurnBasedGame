@@ -75,6 +75,10 @@ Level& Level::operator= (const Level& original) {
     return *this;
 }
 
+void Level::init (const string& filename) {
+    Level(filename.c_str());
+}
+
 Position Level::getPlayerStart() const {
     Position p;
 	for (int i=0;i<ROWS;i++) {

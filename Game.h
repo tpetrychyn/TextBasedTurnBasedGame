@@ -49,6 +49,16 @@ public:
     //
     Game (const string& filename);
     
+    //
+    //  Game
+    //
+    //  Purpose: default constructor
+    //  Argument(s):
+    //  Precondition: N/A
+    //  Returns: N/A
+    //  Side Effect: level and player instances will be initialized
+    //               and the monsters array will be populated with monster instances
+    //
     Game ();
     Game (const Game& original);
     ~Game ();

@@ -32,10 +32,31 @@ Game::Game (const string& filename) : level(filename), player(level.getPlayerSta
     }
 }
 
-Game::Game (){}
+Game::Game () : level(), player(level.getPlayerStart()) {
+    monsters=new Monster*[level.monsterCount];
+    unsigned int currMonster = 0;
+    for (int i=0;i<ROWS;i++) {
+        for (int j=0;j<COLUMNS;j++) {
+            if (level.getValue(toPosition(i, j)) == ATTACKER_START) {
+                monsters[currMonster] = new Attacker(toPosition(i,j));
+                currMonster++;
+            } else if (level.getValue(toPosition(i, j)) == SENTRY_START) {
+                monsters[currMonster] = new Sentry(toPosition(i,j));
+                currMonster++;
+            } else if (level.getValue(toPosition(i, j)) == DRONE_START) {
+                monsters[currMonster] = new Drone(toPosition(i,j));
+                currMonster++;
+            }
+        }
+    }
+}
+
 Game::Game (const Game& original) {
     player = original.player;
-    monsters = original.monsters;
+    monsters=new Monster*[level.monsterCount];
+    for (int i=0;i<level.monsterCount;i++) {
+        monsters[i] = original.monsters[i]->getClone();
+    }
     level = original.level;
 }
 
@@ -46,8 +67,15 @@ Game::~Game () {
 }
 
 Game& Game::operator= (const Game& original) {
+    for (int i=0;i<level.monsterCount;i++) //Delete existing monsters and array
+        delete monsters[i];
+    delete[] monsters;
+    
+    monsters=new Monster*[level.monsterCount]; //Create new monsters array
+    for (int i=0;i<level.monsterCount;i++) {
+        monsters[i] = original.monsters[i]->getClone(); //set new monsters equal to original monsters
+    }
     player = original.player;
-    monsters = original.monsters;
     level = original.level;
     return *this;
 }
@@ -62,7 +90,6 @@ void Game::playerCheck(const Position& lastPlayerPos) {
             if (monsters[i]->isDead()) { //monsters died
                 player.increaseScore(monsters[i]->getPoints()); //Add to players score
                 monsters[i]->setPosition(toPosition(-1,-1));
-                delete monsters[i];
             }
         }
     }

@@ -50,11 +50,43 @@ public:
     //  Side Effect: The Monster monster is initialized to have
     //               default values and to be at position start.
     //
-    
     Monster(const Position& start);
-    
+
+    //
+    // Monster
+    //
+    //  Purpose: To copy an existing Monster constructor
+    //  Argument(s):
+    //    <1> original: The monster to copy
+    //  Precondition: N/A
+    //  Returns: N/A
+    //  Side Effect: The Monster monster is initialized to have
+    //               default values and to be at position start.
+    //
     Monster (const Monster& original);
+    
+    //
+    // Monster
+    //
+    //  Purpose: virtual Monster destructor
+    //  Argument(s):
+    //    <1> original: The monster to copy
+    //  Precondition: N/A
+    //  Returns: N/A
+    //  Side Effect: Deletes the monster instance
+    //
     virtual ~Monster ();
+    
+    //
+    // operator=
+    //
+    //  Purpose: override = operator to set one Monster to another
+    //  Argument(s):
+    //    <1> original: The monster to copy
+    //  Precondition: N/A
+    //  Returns: N/A
+    //  Side Effect: Sets the object that called it to equal original
+    //
     Monster& operator= (const Monster& original);
     
     //
@@ -106,7 +138,7 @@ public:
     const Position& getPosition () const;
     
     //
-    //  monsterSetPosition
+    //  setPosition
     //
     //  Purpose: To change a Monster's current position.
     //  Argument(s):
@@ -120,7 +152,7 @@ public:
     void setPosition (const Position& p);
     
     //
-    //  monsterReceiveDamage
+    //  receiveDamage
     //
     //  Purpose: To reduce an Monster's health.
     //  Argument(s):
@@ -129,12 +161,39 @@ public:
     //  Returns: N/A
     //  Side Effect: Monster monster's health is reduced by amount.
     //
-    
     void receiveDamage (unsigned int amount);
     
+    //
+    //  getDisplayChar
+    //
+    //  Purpose: Purely virtual placeholder for child class function
+    //  Argument(s): N/A
+    //  Precondition: N/A
+    //  Returns: N/A
+    //  Side Effect: N/A
+    //
     virtual char getDisplayChar () const = 0;
-    //virtual Monster* getClone () const = 0;
     
+    //
+    //  getClone
+    //
+    //  Purpose: Purely virtual placeholder for child class function
+    //  Argument(s): N/A
+    //  Precondition: N/A
+    //  Returns: N/A
+    //  Side Effect: N/A
+    //
+    virtual Monster* getClone () const = 0;
+    
+    //
+    //  calculateMove
+    //
+    //  Purpose: Purely virtual placeholder for child class function
+    //  Argument(s): N/A
+    //  Precondition: N/A
+    //  Returns: N/A
+    //  Side Effect: N/A
+    //
     virtual Position calculateMove(const Game& game,
                                    const Position& player_position) = 0;
 

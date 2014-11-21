@@ -22,6 +22,10 @@ private:
     int direction = NORTH;
     
 public:
+    //
+    // Refer to Attacker.h for relevant comments
+    //
+    
     Drone();
     Drone(const Position& start);
     Drone(const Drone& original);

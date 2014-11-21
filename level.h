@@ -63,6 +63,8 @@ public:
     Level (const Level& original);
     ~Level ();  // empty
     Level& operator= (const Level& original);
+    
+    void init (const string& filename);
 
 	//
 	//	getPlayerStart
